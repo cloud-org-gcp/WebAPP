@@ -1,9 +1,5 @@
 from fastapi import FastAPI, Depends, HTTPException, status, Response, Request
-from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
-from datetime import timedelta
-import os
-from dotenv import load_dotenv
 from sqlalchemy import text
 from sqlalchemy.exc import OperationalError
 from database import engine, get_db

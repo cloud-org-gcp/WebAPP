@@ -8,41 +8,14 @@ from sqlalchemy import text
 from sqlalchemy.exc import OperationalError
 from database import engine, get_db
 from models import Base, User
-from schemas import UserCreate, UserUpdate, UserResponse, Token
-from auth import create_access_token, get_current_user, authenticate_user
+from schemas import UserCreate, UserUpdate, UserResponse
+from auth import get_current_user
 import crud
-
-# Load environment variables from .env file
-load_dotenv()
-
-# Load environment variables with defaults
-SECRET_KEY = os.getenv("SECRET_KEY")
-ALGORITHM = os.getenv("ALGORITHM")
-ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES"))
-
-# Ensure values are loaded correctly
-if not SECRET_KEY or not ALGORITHM or not ACCESS_TOKEN_EXPIRE_MINUTES:
-    raise ValueError("Environment variables SECRET_KEY, ALGORITHM, and ACCESS_TOKEN_EXPIRE_MINUTES must be set")
 
 app = FastAPI()
 
 # Create database tables
 Base.metadata.create_all(bind=engine)
-
-@app.post("/v1/token", response_model=Token)
-async def login_for_access_token(db: Session = Depends(get_db), form_data: OAuth2PasswordRequestForm = Depends()):
-    user = authenticate_user(db, form_data.username, form_data.password)
-    if not user:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Incorrect username or password",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
-    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-    access_token = create_access_token(
-        data={"sub": user.email}, expires_delta=access_token_expires
-    )
-    return {"access_token": access_token, "token_type": "bearer"}
 
 @app.post("/v1/user", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
 def create_user(user: UserCreate, db: Session = Depends(get_db)):
@@ -51,7 +24,6 @@ def create_user(user: UserCreate, db: Session = Depends(get_db)):
         return created_user
     except HTTPException as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
-
 
 @app.get("/v1/user/self", response_model=UserResponse, status_code=status.HTTP_200_OK)
 def get_user(current_user: User = Depends(get_current_user)):

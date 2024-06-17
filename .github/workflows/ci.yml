@@ -44,7 +44,7 @@ jobs:
 
     - name: Run tests
       run: |
-        PYTHONPATH=./code_files pytest --cov=.
+        PYTHONPATH=./code_files pytest code_files/test.py --cov=code_files
 
     - name: Lint with flake8
       run: |

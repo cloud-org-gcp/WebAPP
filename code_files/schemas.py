@@ -25,8 +25,4 @@ class UserResponse(BaseModel):
     account_updated: Optional[datetime] = Field(None, example="2016-08-29T09:12:33.001Z", read_only=True)
 
     class Config:
-        orm_mode = True
-
-class Token(BaseModel):
-    access_token: str
-    token_type: str
+        from_attributes = True

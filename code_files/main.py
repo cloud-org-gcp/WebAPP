@@ -56,7 +56,7 @@ async def health_check(response: Response, request: Request):
 @app.head("/healthz")
 @app.options("/healthz")
 def method_not_allowed():
-    return {"status": "error", "message": "Method not allowed"}, status.HTTP_405_METHOD_NOT_ALLOWED
+    return Response(status_code=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 @app.middleware("http")
 async def add_no_cache_header(request: Request, call_next):

@@ -46,4 +46,4 @@ jobs:
     - name: Run tests
       run: |
         source venv/bin/activate
-        pytest code_files/test_integration.py --cov=code_files
+        pytest test_integration.py

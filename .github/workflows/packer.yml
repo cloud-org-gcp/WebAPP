@@ -25,4 +25,9 @@ jobs:
 
       - name: Run packer validate
         run: |
-          packer validate packer
+        packer validate -var "project_id=${{ secrets.PROJECT_ID }}" \
+                        -var "zone=${{ secrets.ZONE }}" \
+                        -var "db_user=${{ secrets.DB_USER }}" \
+                        -var "db_password=${{ secrets.DB_PASSWORD }}" \
+                        -var "db_name=${{ secrets.DB_NAME }}" \
+                        packer/

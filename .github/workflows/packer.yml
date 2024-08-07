@@ -21,7 +21,6 @@ jobs:
       - name: Run packer fmt
         run: |
           packer fmt -check packer/
-        env:
 
       - name: Run packer validate
         run: |

@@ -45,8 +45,10 @@ jobs:
 
     - name: Run database health check test
       run: |
+        source venv/bin/activate
         pytest code_files/test.py --cov=code_files
 
     - name: Run integration tests
       run: |
+        source venv/bin/activate
         pytest code_files/test_integration.py --cov=code_files

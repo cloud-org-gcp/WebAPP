@@ -1,0 +1,28 @@
+name: Packer CI Status Check
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  packer_checks:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Set up Packer
+        uses: hashicorp/setup-packer@v2
+        with:
+          packer_version: latest
+
+      - name: Run packer fmt
+        run: |
+          packer fmt -check packer/
+        env:
+
+      - name: Run packer validate
+        run: |
+          packer validate packer/

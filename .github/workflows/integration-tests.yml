@@ -1,9 +1,9 @@
 name: Integration Tests
 
 on:
-    pull_request:
-      branches:
-        - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   test:
@@ -13,9 +13,9 @@ jobs:
       postgres:
         image: postgres:13
         env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: root
-          POSTGRES_DB: apitest
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
         ports:
           - 5432:5432
         options: >-
@@ -25,7 +25,7 @@ jobs:
           --health-retries 5
 
     env:
-      DATABASE_URL: postgresql://postgres:root@localhost:5432/apitest
+      DATABASE_URL: postgresql://${{ secrets.POSTGRES_USER }}:${{ secrets.POSTGRES_PASSWORD }}@localhost:5432/${{ secrets.POSTGRES_DB }}
 
     steps:
     - name: Checkout code
@@ -43,7 +43,10 @@ jobs:
         pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Run tests
+    - name: Run database health check test
       run: |
-        source venv/bin/activate
+        pytest code_files/test.py --cov=code_files
+
+    - name: Run integration tests
+      run: |
         pytest code_files/test_integration.py --cov=code_files

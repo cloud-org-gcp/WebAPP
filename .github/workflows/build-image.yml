@@ -1,0 +1,41 @@
+name: Build and Deploy GCP Image
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v2
+
+    - name: Build application artifact
+      run: |
+        # Create a zip archive containing only the specified files
+        zip -r app.zip code_files/ requirements.txt
+
+    - name: Authenticate to Google Cloud
+      uses: google-github-actions/auth@v0.4.0
+      with:
+        credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+    - name: Set up gcloud CLI
+      uses: google-github-actions/setup-gcloud@v0.2.0
+      with:
+        project_id: ${{ secrets.GCP_PROJECT_ID }}
+
+    - name: Setup `packer`
+      uses: hashicorp/setup-packer@main
+      id: setup
+      with:
+        version: 1.8.6
+
+    - name: Build Custom GCP Image with Packer
+      run: |
+        cd packer
+        packer init .
+        packer build -var "project_id=${GCP_PROJECT_ID}" -var "zone=${GCP_ZONE}" -var "db_user=${DB_USER}" -var "db_password=${DB_PASSWORD}" -var "db_name=${DB_NAME}" image.pkr.hcl 

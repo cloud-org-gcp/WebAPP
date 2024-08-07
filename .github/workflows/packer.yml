@@ -20,7 +20,7 @@ jobs:
 
       - name: Run packer fmt
         run: |
-          packer fmt -check packer
+          packer fmt packer
 
       - name: Run packer validate
         run: |

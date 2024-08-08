@@ -32,12 +32,6 @@ jobs:
         zip -r app.zip code_files requirements.txt
 
     - name: Run Packer Validate
-      env:
-        PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
-        ZONE: ${{ secrets.GCP_ZONE }}
-        DB_USER: ${{ secrets.DB_USER }}
-        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-        DB_NAME: ${{ secrets.DB_NAME }}
       run: |
         cd packer
         packer validate \

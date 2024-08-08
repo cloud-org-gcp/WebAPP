@@ -3,4 +3,3 @@ zone        = "us-west4-b"
 db_user     = "testuser"
 db_password = "root"
 db_name     = "testdb"
-

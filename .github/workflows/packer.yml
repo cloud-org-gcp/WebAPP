@@ -43,10 +43,10 @@ jobs:
       run: |
         cd packer
         packer validate \
-          -var "project_id=dev-gcp-8989" \
-          -var "zone=us-west4-b" \
-          -var "db_user=${{ secrets.DB_USER }}" \
-          -var "db_password=${{ secrets.DB_PASSWORD }}" \
-          -var "db_name=${{ secrets.DB_NAME }}" \
+          -var "project_id=${PROJECT_ID}" \
+          -var "zone=${ZONE}" \
+          -var "db_user=${DB_USER}" \
+          -var "db_password=${DB_PASSWORD}" \
+          -var "db_name=${DB_NAME}" \
           image.pkr.hcl
 

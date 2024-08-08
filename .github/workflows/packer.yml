@@ -27,6 +27,14 @@ jobs:
       run: |
         packer fmt -check -diff packer/image.pkr.hcl
 
+    - name: Check Environment Variables
+      run: |
+        echo "PROJECT_ID=${{ secrets.GCP_PROJECT_ID }}"
+        echo "ZONE=${{ secrets.GCP_ZONE }}"
+        echo "DB_USER=${{ secrets.DB_USER }}"
+        echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}"
+        echo "DB_NAME=${{ secrets.DB_NAME }}"
+
     - name: Run Packer Validate
       run: |
         packer validate \

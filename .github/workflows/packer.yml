@@ -27,6 +27,10 @@ jobs:
       run: |
         packer fmt -check -diff packer/image.pkr.hcl
 
+    - name: Build Application Artifact
+      run: |
+        zip -r app.zip code_files requirements.txt
+
     - name: Check Environment Variables
       run: |
         echo "PROJECT_ID=${{ secrets.GCP_PROJECT_ID }}"
@@ -36,6 +40,7 @@ jobs:
         echo "DB_NAME=${{ secrets.DB_NAME }}"
 
     - name: Run Packer Validate
+      working-directory: ./packer
       run: |
         packer validate \
           -var "project_id=dev-gcp-8989" \

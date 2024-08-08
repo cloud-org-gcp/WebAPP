@@ -26,9 +26,4 @@ jobs:
       - name: Run packer validate
         working-directory: packer
         run: |
-          packer validate -var "project_id=dev-gcp-8989" \
-                          -var "zone=us-west4-b" \
-                          -var "db_user=${{ secrets.DB_USER }}" \
-                          -var "db_password=${{ secrets.DB_PASSWORD }}" \
-                          -var "db_name=${{ secrets.DB_NAME }}" \
-                          .
+          packer validate image.pkr.hcl

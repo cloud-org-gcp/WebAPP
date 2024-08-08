@@ -30,15 +30,15 @@ variable "machine_type" {
 }
 
 variable "db_user" {
-  type    = string
+  type = string
 }
 
 variable "db_password" {
-  type    = string
+  type = string
 }
 
 variable "db_name" {
-  type    = string
+  type = string
 }
 
 source "googlecompute" "centos" {

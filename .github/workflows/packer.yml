@@ -29,4 +29,11 @@ jobs:
 
     - name: Run Packer Validate
       run: |
-        packer validate packer/image.pkr.hcl
+        packer validate \
+          -var "project_id=${{ secrets.GCP_PROJECT_ID }}" \
+          -var "zone=${{ secrets.GCP_ZONE }}" \
+          -var "db_user=${{ secrets.DB_USER }}" \
+          -var "db_password=${{ secrets.DB_PASSWORD }}" \
+          -var "db_name=${{ secrets.DB_NAME }}" \
+          packer/image.pkr.hcl
+

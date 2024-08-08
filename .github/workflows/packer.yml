@@ -40,8 +40,8 @@ jobs:
         echo "DB_NAME=${{ secrets.DB_NAME }}"
 
     - name: Run Packer Validate
-      working-directory: ./packer
       run: |
+        cd packer
         packer validate \
           -var "project_id=dev-gcp-8989" \
           -var "zone=us-west4-b" \

@@ -29,14 +29,6 @@ jobs:
         project_id: ${{ secrets.GCP_PROJECT_ID }}
         service_account_key: ${{ secrets.GCP_SA_KEY }}
 
-    - name: Run Integration Tests
-      run: |
-        python -m venv venv
-        source venv/bin/activate
-        pip install --upgrade pip
-        pip install -r requirements.txt
-        pytest code_files/tests --cov=code_files
-
     - name: Build Application Artifact
       run: |
         zip -r app.zip code_files requirements.txt

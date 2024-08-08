@@ -28,7 +28,7 @@ jobs:
           echo "Project ID length: ${#PROJECT_ID}"
           echo "Zone length: ${#ZONE}"
           echo "DB User length: ${#DB_USER}"
-          # Don't print the actual password or database name
+          # Avoid printing the actual password or database name
           echo "DB Password length: ${#DB_PASSWORD}"
           echo "DB Name length: ${#DB_NAME}"
 

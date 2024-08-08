@@ -30,4 +30,4 @@ jobs:
                           -var "db_user=${{ secrets.DB_USER }}" \
                           -var "db_password=${{ secrets.DB_PASSWORD }}" \
                           -var "db_name=${{ secrets.DB_NAME }}" \
-                          packer/
+                          packer

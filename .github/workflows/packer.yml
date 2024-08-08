@@ -1,4 +1,4 @@
-name: Packer CI Status Check
+name: Packer Status Check
 
 on:
   pull_request:
@@ -6,24 +6,22 @@ on:
       - main
 
 jobs:
-  packer_checks:
+  check:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      - name: Set up Packer
-        uses: hashicorp/setup-packer@v2
-        with:
-          packer_version: latest
+    - name: Set up Packer
+      uses: hashicorp/setup-packer@v1
+      with:
+        packer_version: latest
 
-      - name: Run packer fmt
-        run: |
-          packer init packer
-          packer fmt packer
+    - name: Run Packer Fmt
+      run: |
+        packer fmt -check -diff packer/image.pkr.hcl
 
-      - name: Run packer validate
-        working-directory: packer
-        run: |
-          packer validate image.pkr.hcl
+    - name: Run Packer Validate
+      run: |
+        packer validate packer/image.pkr.hcl

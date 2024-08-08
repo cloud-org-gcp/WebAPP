@@ -77,7 +77,6 @@ build {
     script = "./scripts/install_dependencies.sh"
   }
 
-
   # Provisioner to set up systemd service for the application
   provisioner "shell" {
     script = "./scripts/systemd-service.sh"

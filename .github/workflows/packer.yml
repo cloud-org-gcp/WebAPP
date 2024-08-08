@@ -25,8 +25,8 @@ jobs:
 
       - name: Run packer validate
         run: |
-          packer validate -var "project_id=${{ secrets.PROJECT_ID }}" \
-                          -var "zone=${{ secrets.ZONE }}" \
+          packer validate -var "project_id=dev-gcp-8989" \
+                          -var "zone=us-west4-b" \
                           -var "db_user=${{ secrets.DB_USER }}" \
                           -var "db_password=${{ secrets.DB_PASSWORD }}" \
                           -var "db_name=${{ secrets.DB_NAME }}" \

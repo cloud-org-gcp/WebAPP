@@ -64,7 +64,7 @@ build {
 
   # Provisioner to create user and set directory ownership
   provisioner "shell" {
-    script = "scripts/create_user.sh"
+    script = "./scripts/create_user.sh"
   }
 
   # Provisioner to install dependencies and deploy application
@@ -74,12 +74,12 @@ build {
       "DB_PASSWORD=${var.db_password}",
       "DB_NAME=${var.db_name}"
     ]
-    script = "scripts/install_dependencies.sh"
+    script = "./scripts/install_dependencies.sh"
   }
 
 
   # Provisioner to set up systemd service for the application
   provisioner "shell" {
-    script = "scripts/systemd-service.sh"
+    script = "./scripts/systemd-service.sh"
   }
 }

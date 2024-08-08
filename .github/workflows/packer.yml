@@ -31,14 +31,6 @@ jobs:
       run: |
         zip -r app.zip code_files requirements.txt
 
-    - name: Check Environment Variables
-      run: |
-        echo "PROJECT_ID=${{ secrets.GCP_PROJECT_ID }}"
-        echo "ZONE=${{ secrets.GCP_ZONE }}"
-        echo "DB_USER=${{ secrets.DB_USER }}"
-        echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}"
-        echo "DB_NAME=${{ secrets.DB_NAME }}"
-
     - name: Run Packer Validate
       env:
         PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
@@ -48,8 +40,6 @@ jobs:
         DB_NAME: ${{ secrets.DB_NAME }}
       run: |
         cd packer
-        echo "Project ID: [${PROJECT_ID}]"
-        echo "Zone: [${ZONE}]"
         packer validate \
           -var "project_id=${PROJECT_ID}" \
           -var "zone=${ZONE}" \

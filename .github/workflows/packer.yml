@@ -24,13 +24,13 @@ jobs:
           packer fmt packer
           
       - name: Debug: Print secret lengths
-      run: |
-        echo "Project ID length: ${#PROJECT_ID}"
-        echo "Zone length: ${#ZONE}"
-        echo "DB User length: ${#DB_USER}"
-        # Don't print the actual password or database name
-        echo "DB Password length: ${#DB_PASSWORD}"
-        echo "DB Name length: ${#DB_NAME}"
+        run: |
+          echo "Project ID length: ${#PROJECT_ID}"
+          echo "Zone length: ${#ZONE}"
+          echo "DB User length: ${#DB_USER}"
+          # Don't print the actual password or database name
+          echo "DB Password length: ${#DB_PASSWORD}"
+          echo "DB Name length: ${#DB_NAME}"
 
       - name: Run packer validate
         run: |

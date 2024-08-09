@@ -1,1 +1,1 @@
-# Webapp APIs and Packer image build in GCP
+# Webapp APIs and Packer image build

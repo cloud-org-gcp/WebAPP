@@ -1,4 +1,5 @@
-name: Packer Build and Deployment
+
+name: Build Packer Image
 
 on:
   push:
@@ -6,39 +7,45 @@ on:
       - main
 
 jobs:
-  build:
+
+  packer_build:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.9'
+      - name: Set up Packer
+        uses: hashicorp/setup-packer@v2
+        with:
+          version: '1.8.6'
 
-    - name: Set up Packer
-      uses: hashicorp/setup-packer@v1
-      with:
-        packer_version: latest
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_CREDENTIALS }}
 
-    - name: Set up gcloud CLI
-      uses: google-github-actions/setup-gcloud@v1
-      with:
-        project_id: ${{ secrets.GCP_PROJECT_ID }}
-        service_account_key: ${{ secrets.GCP_SA_KEY }}
+      - name: Build Application Artifact
+        run: |
+          zip -r app.zip code_files requirements.txt
 
-    - name: Build Application Artifact
-      run: |
-        zip -r app.zip code_files requirements.txt
+      - name: Initialize Packer Plugins
+        run: |
+          packer init packer/image.pkr.hcl
 
-    - name: Build Packer Image
-      run: |
-        packer build \
-          -var "project_id=${{ secrets.GCP_PROJECT_ID }}" \
-          -var "zone=${{ secrets.GCP_ZONE }}" \
-          -var "db_user=${{ secrets.DB_USER }}" \
-          -var "db_password=${{ secrets.DB_PASSWORD }}" \
-          -var "db_name=${{ secrets.DB_NAME }}" \
-          packer/image.pkr.hcl
+      - name: Packer Build
+        env:
+          PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+          ZONE: ${{ secrets.GCP_ZONE }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+        run: |
+          cd packer
+          packer build \
+            -var "project_id=${PROJECT_ID}" \
+            -var "zone=${ZONE}" \
+            -var "db_user=${DB_USER}" \
+            -var "db_password=${DB_PASSWORD}" \
+            -var "db_name=${DB_NAME}" \
+            image.pkr.hcl

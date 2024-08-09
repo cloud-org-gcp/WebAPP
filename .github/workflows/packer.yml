@@ -47,4 +47,3 @@ jobs:
           -var "db_password=${DB_PASSWORD}" \
           -var "db_name=${DB_NAME}" \
           image.pkr.hcl
-

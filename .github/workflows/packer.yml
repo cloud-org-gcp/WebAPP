@@ -1,0 +1,50 @@
+name: Packer Check
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Setup `packer`
+      uses: hashicorp/setup-packer@main
+      id: setup
+      with:
+        version: 1.8.6
+
+    - name: Initialize Packer Plugins
+      run: |
+        packer init packer/image.pkr.hcl
+
+    - name: Run Packer Fmt
+      run: |
+        packer fmt -check -diff packer/image.pkr.hcl
+
+    - name: Build Application Artifact
+      run: |
+        zip -r app.zip code_files requirements.txt
+
+    - name: Run Packer Validate
+      env:
+        PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+        ZONE: ${{ secrets.GCP_ZONE }}
+        DB_USER: ${{ secrets.DB_USER }}
+        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        DB_NAME: ${{ secrets.DB_NAME }}
+      run: |
+        cd packer
+        packer validate \
+          -var "project_id=${PROJECT_ID}" \
+          -var "zone=${ZONE}" \
+          -var "db_user=${DB_USER}" \
+          -var "db_password=${DB_PASSWORD}" \
+          -var "db_name=${DB_NAME}" \
+          image.pkr.hcl
+

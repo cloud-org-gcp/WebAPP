@@ -1,0 +1,44 @@
+name: Packer Build and Deployment
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.9'
+
+    - name: Set up Packer
+      uses: hashicorp/setup-packer@v1
+      with:
+        packer_version: latest
+
+    - name: Set up gcloud CLI
+      uses: google-github-actions/setup-gcloud@v1
+      with:
+        project_id: ${{ secrets.GCP_PROJECT_ID }}
+        service_account_key: ${{ secrets.GCP_SA_KEY }}
+
+    - name: Build Application Artifact
+      run: |
+        zip -r app.zip code_files requirements.txt
+
+    - name: Build Packer Image
+      run: |
+        packer build \
+          -var "project_id=${{ secrets.GCP_PROJECT_ID }}" \
+          -var "zone=${{ secrets.GCP_ZONE }}" \
+          -var "db_user=${{ secrets.DB_USER }}" \
+          -var "db_password=${{ secrets.DB_PASSWORD }}" \
+          -var "db_name=${{ secrets.DB_NAME }}" \
+          packer/image.pkr.hcl

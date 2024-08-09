@@ -1,4 +1,4 @@
-name: Packer Check
+name: Packer Format Check and Validate
 
 on:
   pull_request:

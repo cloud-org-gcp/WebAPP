@@ -29,17 +29,6 @@ variable "machine_type" {
   description = "Machine type to use for the build instance"
 }
 
-variable "db_user" {
-  type = string
-}
-
-variable "db_password" {
-  type = string
-}
-
-variable "db_name" {
-  type = string
-}
 
 source "googlecompute" "centos" {
   project_id          = var.project_id
@@ -69,11 +58,6 @@ build {
 
   # Provisioner to install dependencies and deploy application
   provisioner "shell" {
-    environment_vars = [
-      "DB_USER=${var.db_user}",
-      "DB_PASSWORD=${var.db_password}",
-      "DB_NAME=${var.db_name}"
-    ]
     script = "./scripts/install_dependencies.sh"
   }
 

@@ -35,15 +35,9 @@ jobs:
       env:
         PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
         ZONE: ${{ secrets.GCP_ZONE }}
-        DB_USER: ${{ secrets.DB_USER }}
-        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-        DB_NAME: ${{ secrets.DB_NAME }}
       run: |
         cd packer
         packer validate \
           -var "project_id=${PROJECT_ID}" \
           -var "zone=${ZONE}" \
-          -var "db_user=${DB_USER}" \
-          -var "db_password=${DB_PASSWORD}" \
-          -var "db_name=${DB_NAME}" \
           image.pkr.hcl

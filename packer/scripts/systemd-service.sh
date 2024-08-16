@@ -6,8 +6,9 @@ sudo tee /etc/systemd/system/myapp.service > /dev/null <<EOF
 Description=My FastAPI Application
 
 [Service]
+EnvironmentFile=/etc/environment
 WorkingDirectory=/opt/myapp/code_files
-ExecStart=/usr/bin/python3 -m uvicorn main:app --host 0.0.0.0 --port 8000
+ExecStart=/opt/myapp/venv/bin/python3 -m uvicorn main:app --host 0.0.0.0 --port 8000
 User=csye6225
 Group=csye6225
 Restart=always

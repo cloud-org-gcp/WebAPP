@@ -65,4 +65,8 @@ build {
   provisioner "shell" {
     script = "./scripts/systemd-service.sh"
   }
+  # Provisioner to configure the Ops Agent
+  provisioner "shell" {
+    script = "./scripts/ops_agent.sh"
+  }
 }

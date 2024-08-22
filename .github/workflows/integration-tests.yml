@@ -43,6 +43,9 @@ jobs:
         pip install --upgrade pip
         pip install -r requirements.txt
 
+    - name: Create log directory
+      run: sudo mkdir -p /var/log/myapp
+
     - name: Run database health check test
       run: |
         source venv/bin/activate
